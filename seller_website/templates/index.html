@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Agribusiness Portal | Smart AI Agriculture System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        seller: { 50: '#f8fafc', 100: '#f1f5f9', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/seller_website/static/css/seller.css">
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Top Seller Nav -->
+    <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20 text-lg">
+                    <i class="fa-solid fa-building-wheat"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold text-white tracking-tight">AgriTrader Hub</span>
+                    <span class="block text-[10px] font-bold uppercase tracking-widest text-blue-400">Seller & B2B Procurement Portal</span>
+                </div>
+            </div>
+
+            <!-- Ecosystem Switcher Links -->
+            <div class="flex items-center space-x-3 text-xs font-semibold">
+                <a href="/" class="text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition">
+                    <i class="fa-solid fa-home"></i> Ecosystem Hub
+                </a>
+                <a href="/farmer" class="text-slate-400 hover:text-emerald-400 px-3 py-1.5 rounded-lg hover:bg-slate-800 transition hidden sm:inline-block">
+                    <i class="fa-solid fa-seedling"></i> Farmer Portal
+                </a>
+                <a href="/buyer" class="text-slate-400 hover:text-amber-400 px-3 py-1.5 rounded-lg hover:bg-slate-800 transition hidden sm:inline-block">
+                    <i class="fa-solid fa-cart-shopping"></i> Buyer E-Mart
+                </a>
+                <button onclick="openAuthModal('login')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/30 transition">
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Seller Login
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="flex-1 py-14 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+                <div class="lg:col-span-7">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-700 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-chart-line text-blue-400"></i> Direct-From-Farmer Procurement Platform
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-5">
+                        Acquire Farm Produce Direct From Growers & <span class="text-blue-400">Scale Your Agri-Commerce.</span>
+                    </h1>
+                    <p class="text-base text-slate-300 mb-8 leading-relaxed">
+                        Access real-time harvest listings submitted by farmers, acquire bulk crops in 1-click, manage your warehouse inventory, and publish fresh produce or agri-inputs directly to the <strong>Buyer Website</strong>.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-4">
+                        <button onclick="openAuthModal('register')" class="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-lg shadow-blue-600/30 flex items-center gap-2 transition">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <span>Register as Agribusiness Seller</span>
+                        </button>
+                        <button onclick="quickDemoLogin()" class="px-6 py-3.5 rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-750 text-blue-300 font-semibold text-sm shadow-sm flex items-center gap-2 transition">
+                            <i class="fa-solid fa-bolt text-blue-400"></i>
+                            <span>Instant Seller Demo (1-Click)</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-slate-800">
+                        <div>
+                            <div class="text-2xl font-extrabold text-blue-400">100% Direct</div>
+                            <div class="text-xs text-slate-400 font-medium">Farm Gate Sourcing</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-blue-400">Instant Sync</div>
+                            <div class="text-xs text-slate-400 font-medium">Buyer E-Mart Publishing</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-blue-400">₹0 Middleman</div>
+                            <div class="text-xs text-slate-400 font-medium">Transparent Pricing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Stream Feed Preview -->
+                <div class="lg:col-span-5">
+                    <div class="bg-slate-800/80 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-2xl backdrop-blur">
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-700 mb-5">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center text-lg">
+                                    <i class="fa-solid fa-tower-broadcast animate-pulse"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">Live Farmer Inflow Feed</div>
+                                    <div class="text-xs text-slate-400">Incoming Harvest Submissions</div>
+                                </div>
+                            </div>
+                            <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-xs font-bold">Live Stream</span>
+                        </div>
+
+                        <!-- Sample Inflow Card -->
+                        <div class="space-y-3">
+                            <div class="p-4 rounded-2xl bg-slate-900 border border-slate-700/80">
+                                <div class="flex items-center justify-between text-xs mb-1">
+                                    <span class="text-emerald-400 font-bold">🌾 Farmer: Shaik Basha</span>
+                                    <span class="text-slate-400">Hyderabad</span>
+                                </div>
+                                <div class="text-sm font-bold text-white">500 KG Premium Sona Masoori Rice</div>
+                                <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-800 text-xs">
+                                    <span class="text-blue-300 font-extrabold">₹42 / KG</span>
+                                    <span class="px-2 py-1 rounded bg-blue-600 text-white font-bold text-[10px]">1-Click Acquire</span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-slate-900 border border-slate-700/80">
+                                <div class="flex items-center justify-between text-xs mb-1">
+                                    <span class="text-emerald-400 font-bold">🍅 Farmer: Ramesh Patel</span>
+                                    <span class="text-slate-400">Rangareddy</span>
+                                </div>
+                                <div class="text-sm font-bold text-white">200 KG Farm Fresh Tomatoes</div>
+                                <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-800 text-xs">
+                                    <span class="text-blue-300 font-extrabold">₹25 / KG</span>
+                                    <span class="px-2 py-1 rounded bg-blue-600 text-white font-bold text-[10px]">1-Click Acquire</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 text-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-slate-700 relative animate-scaleIn">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-store"></i>
+                </div>
+                <div>
+                    <h3 id="modalTitle" class="text-xl font-bold text-white">Seller Login</h3>
+                    <p class="text-xs text-slate-400">Access Agribusiness trader control panel</p>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleAuthLogin(event)">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Email Address</label>
+                        <input type="email" id="loginEmail" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="seller@smartagri.com" value="seller@smartagri.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Password</label>
+                        <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm" placeholder="••••••••" value="password123">
+                    </div>
+                    <button type="submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md shadow-blue-600/30 transition">
+                        Log In to Seller Dashboard
+                    </button>
+                </div>
+                <div class="mt-4 text-center text-xs text-slate-400">
+                    Don't have a seller account? <a href="javascript:void(0)" onclick="toggleAuthMode('register')" class="text-blue-400 font-bold hover:underline">Register Agribusiness</a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="hidden" onsubmit="handleAuthRegister(event)">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Business / Trader Name</label>
+                        <input type="text" id="regName" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white" placeholder="ABC Agro Traders">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Email Address</label>
+                        <input type="email" id="regEmail" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white" placeholder="seller@domain.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Phone Number</label>
+                        <input type="tel" id="regPhone" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white" placeholder="9876543211">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">City / Mandi Hub</label>
+                        <input type="text" id="regCity" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white" placeholder="Warangal">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-300 mb-1">Password</label>
+                        <input type="password" id="regPassword" required class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white" placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md shadow-blue-600/30 transition">
+                        Create Seller Account
+                    </button>
+                </div>
+                <div class="mt-4 text-center text-xs text-slate-400">
+                    Already registered? <a href="javascript:void(0)" onclick="toggleAuthMode('login')" class="text-blue-400 font-bold hover:underline">Log In</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 Smart AI Agriculture System — AgriTrader Seller Portal</p>
+    </footer>
+
+    <script src="/seller_website/static/js/seller.js"></script>
+</body>
+</html>
+

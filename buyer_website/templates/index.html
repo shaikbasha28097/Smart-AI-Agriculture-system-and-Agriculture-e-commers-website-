@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri E-Mart | Fresh Farm Produce & Agro-Inputs Marketplace</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        buyer: { 50: '#fff7ed', 100: '#ffedd5', 500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/buyer_website/static/css/buyer.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Top Buyer Nav -->
+    <header class="bg-white/95 backdrop-blur border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between gap-4">
+            
+            <div class="flex items-center space-x-3">
+                <a href="/buyer" class="flex items-center space-x-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md shadow-orange-500/20 text-lg">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold text-slate-900 tracking-tight leading-none block">Agri E-Mart</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-orange-600 block mt-0.5">Farm-to-Fork & Agri-Inputs</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-md mx-4">
+                <div class="relative w-full">
+                    <input type="text" id="buyerSearchInput" oninput="handleSearch(this.value)" placeholder="Search fresh vegetables, rice, organic fertilizers, seeds..." class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none bg-slate-50/80">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                </div>
+            </div>
+
+            <!-- Inter-Portal Links & Cart Trigger -->
+            <div class="flex items-center space-x-3 text-xs font-semibold">
+                <a href="/" class="text-slate-500 hover:text-orange-600 px-2.5 py-1.5 rounded-lg hover:bg-orange-50 transition hidden sm:inline-block">
+                    <i class="fa-solid fa-house"></i> Portal Hub
+                </a>
+                <a href="/farmer" class="text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition hidden sm:inline-block">
+                    <i class="fa-solid fa-seedling"></i> Farmer AI
+                </a>
+                <a href="/seller" class="text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-lg transition hidden sm:inline-block">
+                    <i class="fa-solid fa-store"></i> Seller Portal
+                </a>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartDrawer()" class="relative p-2.5 rounded-xl bg-orange-50 text-orange-600 hover:bg-orange-100 border border-orange-200 transition">
+                    <i class="fa-solid fa-bag-shopping text-base"></i>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-orange-600 text-white text-[10px] font-bold flex items-center justify-center shadow">0</span>
+                </button>
+
+                <!-- Auth/Dashboard Button -->
+                <a href="/buyer/dashboard" id="btnBuyerAccount" class="px-4 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold shadow-md shadow-orange-600/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-user"></i> <span id="buyerNavName">My Orders</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Filter Bar -->
+    <div class="bg-white border-b border-slate-200 shadow-sm overflow-x-auto py-2.5 px-4">
+        <div class="max-w-7xl mx-auto flex items-center space-x-2 text-xs font-semibold">
+            <button onclick="filterCategory(null)" class="category-btn active px-3.5 py-1.5 rounded-full bg-orange-600 text-white transition whitespace-nowrap">
+                All Products
+            </button>
+            <button onclick="filterCategory(3)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
+                🥕 Fresh Farm Produce
+            </button>
+            <button onclick="filterCategory(1)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
+                🌱 Organic Fertilizers & Remedies
+            </button>
+            <button onclick="filterCategory(2)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
+                🧪 Chemical Fertilizers & Fungicides
+            </button>
+            <button onclick="filterCategory(4)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
+                🌾 Certified Hybrid Seeds
+            </button>
+            <button onclick="filterCategory(5)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
+                🛠️ Smart Farming Tools
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Store Catalog -->
+    <main class="flex-1 py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Farmer AI Disease Referral Banner (Visible if referred with product_id) -->
+            <div id="aiReferralBanner" class="hidden bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white rounded-2xl p-5 mb-8 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-bold text-emerald-200">Referred by Kisan AI Disease Diagnostic</div>
+                        <div class="text-sm font-bold text-white">We found the recommended organic/chemical remedy for your leaf diagnosis!</div>
+                    </div>
+                </div>
+                <span class="text-xs px-3 py-1 bg-white/20 rounded-full font-bold">1-Click Fast Checkout Ready</span>
+            </div>
+
+            <!-- Header Section -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Agricultural Marketplace & E-Mart</h1>
+                    <p class="text-xs text-slate-500 mt-0.5">Direct farm-gate harvests, certified bio-fertilizers, and crop protection sprays.</p>
+                </div>
+                
+                <div class="flex items-center space-x-3 text-xs font-semibold">
+                    <label class="flex items-center gap-2 cursor-pointer select-none bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded-xl border border-emerald-200">
+                        <input type="checkbox" id="chkOnlyOrganic" onchange="handleOrganicToggle(this.checked)" class="rounded text-emerald-600">
+                        <span>Only Certified Organic</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Products Catalog Grid -->
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Dynamic products loaded via JS -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Slide-Out Shopping Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="toggleCartDrawer()"></div>
+        <div class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-10 flex flex-col justify-between animate-slideLeft">
+            
+            <!-- Cart Header -->
+            <div class="p-5 border-b border-slate-200 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-base">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">Your Shopping Cart</h3>
+                </div>
+                <button onclick="toggleCartDrawer()" class="text-slate-400 hover:text-slate-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items Container -->
+            <div id="cartItemsList" class="flex-1 p-5 overflow-y-auto space-y-4">
+                <!-- Cart items rendered via JS -->
+            </div>
+
+            <!-- Cart Summary & Checkout Trigger -->
+            <div class="p-5 bg-slate-50 border-t border-slate-200 space-y-3 text-xs">
+                <div class="flex justify-between text-slate-600">
+                    <span>Subtotal:</span>
+                    <strong id="cartSubtotal" class="text-slate-900 text-sm">₹0.00</strong>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                    <span>Estimated Delivery:</span>
+                    <strong id="cartDelivery" class="text-emerald-700">FREE</strong>
+                </div>
+                <div class="flex justify-between text-sm font-bold text-slate-900 pt-2 border-t border-slate-200">
+                    <span>Total Amount:</span>
+                    <strong id="cartTotal" class="text-base text-orange-600">₹0.00</strong>
+                </div>
+
+                <button onclick="openCheckoutModal()" id="btnCheckout" class="w-full py-3.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm shadow-lg shadow-orange-600/30 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock text-xs"></i> Proceed to Secure Checkout
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Instant Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-7 shadow-2xl border border-slate-200 relative animate-scaleIn">
+            <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-credit-card"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Complete Purchase Order</h3>
+                    <p class="text-xs text-slate-500">Fast delivery from local farmers and authorized suppliers</p>
+                </div>
+            </div>
+
+            <form id="checkoutForm" onsubmit="handleCheckoutSubmit(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Delivery Address</label>
+                    <textarea id="chkAddress" rows="2" required placeholder="Flat / House No, Street, Landmark, City, Pincode" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-medium">Flat 402, Green Meadows, Madhapur, Hyderabad - 500081</textarea>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Contact Phone</label>
+                        <input type="tel" id="chkPhone" required value="9876543212" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Payment Method</label>
+                        <select id="chkPaymentMethod" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold">
+                            <option value="upi">UPI / QR Code (Instant)</option>
+                            <option value="cod">Cash on Delivery (COD)</option>
+                            <option value="card">Credit / Debit Card</option>
+                            <option value="netbanking">Net Banking</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Order Price Review -->
+                <div class="p-3.5 bg-orange-50 rounded-xl border border-orange-200 text-xs flex items-center justify-between">
+                    <div>
+                        <span class="text-orange-900 font-bold block">Grand Total:</span>
+                        <span class="text-[10px] text-orange-700">Inclusive of all agricultural taxes</span>
+                    </div>
+                    <div id="chkOrderAmount" class="text-xl font-extrabold text-orange-600">₹0.00</div>
+                </div>
+
+                <button type="submit" id="btnPlaceOrder" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold text-sm shadow-md shadow-orange-500/30 transition">
+                    Confirm & Place Order
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 Smart AI Agriculture System — Agri E-Mart Marketplace</p>
+    </footer>
+
+    <script src="/buyer_website/static/js/buyer.js"></script>
+</body>
+</html>
+

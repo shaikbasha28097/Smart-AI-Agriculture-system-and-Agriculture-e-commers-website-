@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Orders & Tracking | Agri E-Mart</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        buyer: { 50: '#fff7ed', 500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/buyer_website/static/css/buyer.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+    <!-- Top Buyer Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="/buyer" class="flex items-center space-x-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-orange-600 flex items-center justify-center text-white shadow-md shadow-orange-600/30 text-lg">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold text-slate-900 leading-tight block">Agri E-Mart</span>
+                        <span class="text-[10px] font-bold text-orange-600 uppercase tracking-widest block">Buyer Account & Tracking</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Inter-Portal Nav Links & Back to Store -->
+            <div class="flex items-center space-x-3 text-xs font-semibold">
+                <a href="/buyer" class="px-3.5 py-2 rounded-xl bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Store
+                </a>
+                <a href="/" class="text-slate-500 hover:text-orange-600 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition hidden sm:inline-block">
+                    <i class="fa-solid fa-house"></i> Portal Hub
+                </a>
+                <button onclick="handleLogout()" title="Logout" class="text-slate-400 hover:text-rose-600 text-sm ml-2 p-1">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Buyer Dashboard -->
+    <main class="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm mb-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-slate-200">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-14 h-14 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-slate-900" id="buyerProfileName">Ramesh Kumar</h1>
+                        <p class="text-xs text-slate-500" id="buyerProfileEmail">buyer@smartagri.com | Verified E-Mart Buyer</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">Active Account</span>
+                </div>
+            </div>
+
+            <!-- Orders Tracking Feed -->
+            <div class="mt-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">My Orders & Live Delivery Tracking</h3>
+                
+                <div id="buyerOrdersList" class="space-y-6">
+                    <!-- Dynamic orders loaded via JS -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 Smart AI Agriculture System — Agri E-Mart</p>
+    </footer>
+
+    <script src="/buyer_website/static/js/buyer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBuyerOrders();
+        });
+    </script>
+</body>
+</html>
+
