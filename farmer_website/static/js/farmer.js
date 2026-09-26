@@ -561,3 +561,29 @@ async function handleChatSubmit(e) {
     }
 }
 
+// Audio Readout Functions for Illiterate Farmers
+function speakDiseaseResult() {
+    if (!window.voiceLangMgr) return;
+    const crop = document.getElementById('resCropName')?.innerText || '';
+    const disease = document.getElementById('resDiseaseName')?.innerText || '';
+    const confidence = document.getElementById('resConfidence')?.innerText || '';
+    const symptoms = document.getElementById('resSymptoms')?.innerText || '';
+    const product = document.getElementById('resProductName')?.innerText || '';
+    
+    const textToSpeak = `${crop}. Disease diagnosed: ${disease} with ${confidence} accuracy. Symptoms: ${symptoms}. Recommended treatment product: ${product}. Click Buy Now to order.`;
+    window.voiceLangMgr.speakText(textToSpeak);
+}
+
+function speakCropRecResult() {
+    if (!window.voiceLangMgr) return;
+    const crop = document.getElementById('topRecCrop')?.innerText || '';
+    const match = document.getElementById('topRecConfidence')?.innerText || '';
+    const yieldAcre = document.getElementById('topRecYield')?.innerText || '';
+    const duration = document.getElementById('topRecDuration')?.innerText || '';
+    const roi = document.getElementById('topRecRoi')?.innerText || '';
+
+    const textToSpeak = `Top recommended crop for your soil is ${crop} with ${match} confidence. Expected yield is ${yieldAcre}, crop duration is ${duration}, estimated return on investment is ${roi}.`;
+    window.voiceLangMgr.speakText(textToSpeak);
+}
+
+

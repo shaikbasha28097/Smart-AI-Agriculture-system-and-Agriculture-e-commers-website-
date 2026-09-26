@@ -40,11 +40,12 @@
 
             <!-- Inter-Portal Nav Links & Back to Store -->
             <div class="flex items-center space-x-3 text-xs font-semibold">
+                <div class="lang-selector-container"></div>
                 <a href="/buyer" class="px-3.5 py-2 rounded-xl bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Store
+                    <i class="fa-solid fa-arrow-left"></i> <span data-i18n="all_products">Back to Store</span>
                 </a>
                 <a href="/" class="text-slate-500 hover:text-orange-600 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-house"></i> Portal Hub
+                    <i class="fa-solid fa-house"></i> <span data-i18n="portal_hub">Portal Hub</span>
                 </a>
                 <button onclick="handleLogout()" title="Logout" class="text-slate-400 hover:text-rose-600 text-sm ml-2 p-1">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -90,6 +91,8 @@
     </footer>
 
     <script src="/buyer_website/static/js/buyer.js"></script>
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/buyer_website/static/js/voice_multilingual.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             loadBuyerOrders();

@@ -41,11 +41,12 @@
 
             <!-- Inter-Portal Nav Links & User Profile -->
             <div class="flex items-center space-x-3">
+                <div class="lang-selector-container"></div>
                 <a href="/" class="text-xs font-semibold text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg hover:bg-slate-800 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-house"></i> Portal Hub
+                    <i class="fa-solid fa-house"></i> <span data-i18n="portal_hub">Portal Hub</span>
                 </a>
                 <a href="/buyer" class="text-xs font-semibold text-amber-300 bg-amber-950/60 hover:bg-amber-900/80 border border-amber-700/60 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-cart-shopping"></i> <span>Buyer E-Mart</span>
+                    <i class="fa-solid fa-cart-shopping"></i> <span data-i18n="buyer_emart">Buyer E-Mart</span>
                 </a>
                 <div class="h-5 w-px bg-slate-800"></div>
                 <div class="flex items-center space-x-2">
@@ -144,6 +145,9 @@
             <button onclick="switchTab('farmer-harvests')" id="tabBtn-farmer-harvests" class="tab-btn active px-4 py-2 rounded-xl bg-blue-600 text-white flex items-center gap-2 transition whitespace-nowrap">
                 <i class="fa-solid fa-wheat-awn"></i> Available Farmer Crops Feed
             </button>
+            <button onclick="switchTab('scanner')" id="tabBtn-scanner" class="tab-btn px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-750 border border-slate-700 flex items-center gap-2 transition whitespace-nowrap">
+                <i class="fa-solid fa-microscope text-amber-400"></i> AI Whole-Lot Quality & Chemical Inspector
+            </button>
             <button onclick="switchTab('inventory')" id="tabBtn-inventory" class="tab-btn px-4 py-2 rounded-xl bg-slate-800 text-slate-300 hover:bg-slate-750 border border-slate-700 flex items-center gap-2 transition whitespace-nowrap">
                 <i class="fa-solid fa-boxes-stacked"></i> Warehouse & Products Inventory
             </button>
@@ -180,7 +184,93 @@
 
 
         <!-- ================================================================= -->
-        <!-- TAB 2: INVENTORY & PUBLISH TO BUYER STORE -->
+        <!-- TAB 2: AI WHOLE-LOT QUALITY & CHEMICAL INSPECTOR -->
+        <!-- ================================================================= -->
+        <div id="tab-scanner" class="tab-content hidden">
+            <div class="bg-slate-800/90 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-xl space-y-7">
+                <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-slate-700">
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold border border-amber-500/30">
+                                🔬 AI Food Safety & Quality Gatekeeper
+                            </span>
+                            <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30">
+                                ⚠️ 30% Chemical Selling Rule
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-white">Whole-Lot Quality, Chemical & Pesticide Scanner</h3>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Scan whole product lots (Fruits, Vegetables, Seeds, Plants). Products with <strong>&le; 30% Chemical Involvement</strong> are <strong>APPROVED</strong> for sale; products exceeding 30% are strictly <strong>REJECTED</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Inspection Form -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div class="lg:col-span-5 bg-slate-900/90 p-6 rounded-2xl border border-slate-700 space-y-4">
+                        <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-camera text-blue-400"></i> Upload Whole Lot Image / Batch
+                        </h4>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Select Agricultural Category</label>
+                            <select id="sellerScanCategory" onchange="updateSellerScanPresets()" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white">
+                                <option value="1">🍎 Fruits (Mango, Apple, Banana, Orange, etc.)</option>
+                                <option value="2">🥕 Vegetables (Tomato, Potato, Chilli, Onion, etc.)</option>
+                                <option value="3">🌾 Seeds (Tomato Hybrid, Paddy, Cotton Seeds Lot)</option>
+                                <option value="4">🪴 Plants (Nursery Live Saplings / Tissue Banana)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Commodity / Crop Name</label>
+                            <input type="text" id="sellerScanCommodity" value="Tomato" placeholder="e.g. Tomato, Mango, Apple, Seeds" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Quick Test Preset</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button type="button" onclick="setSellerScanPreset('organic')" id="btnPresetOrganic" class="px-3 py-2 rounded-xl bg-emerald-600/30 hover:bg-emerald-600/50 border border-emerald-500/40 text-emerald-300 text-xs font-bold transition text-left">
+                                    🍃 Pure / Low Chem<br><span class="text-[10px] font-normal text-emerald-400">&le; 30% Chem (Approved)</span>
+                                </button>
+                                <button type="button" onclick="setSellerScanPreset('chemical')" id="btnPresetChemical" class="px-3 py-2 rounded-xl bg-red-600/30 hover:bg-red-600/50 border border-red-500/40 text-red-300 text-xs font-bold transition text-left">
+                                    ⚠️ High Chemical<br><span class="text-[10px] font-normal text-red-400">&gt; 30% Chem (Rejected)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Whole Lot Photo Upload</label>
+                            <input type="file" id="sellerScanImage" accept="image/*" onchange="previewScanLotImage(this)" class="w-full text-xs text-slate-400 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
+                            <div id="scanLotPreviewContainer" class="hidden mt-2 p-2 rounded-xl bg-slate-950/70 border border-slate-700 flex items-center gap-3">
+                                <img id="scanLotPreviewImg" src="" class="w-14 h-14 object-cover rounded-lg border border-slate-700" alt="Lot Preview">
+                                <div class="text-[11px] text-slate-300">
+                                    <span class="font-bold text-emerald-400 block"><i class="fa-solid fa-circle-check"></i> Image Loaded</span>
+                                    <span id="scanLotFileName" class="text-slate-400 truncate max-w-[180px] block">photo.jpg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="runSellerWholeLotScan()" id="btnRunSellerScan" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs shadow-lg transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-microchip"></i> Scan Whole Lot & Verify Selling Eligibility
+                        </button>
+                    </div>
+
+                    <!-- Inspection Results Card -->
+                    <div class="lg:col-span-7 bg-slate-900/90 p-6 rounded-2xl border border-slate-700 flex flex-col justify-between" id="sellerScanResultBox">
+                        <div class="text-center py-12 text-slate-400">
+                            <i class="fa-solid fa-flask-vial text-4xl text-slate-600 mb-3 block"></i>
+                            <h5 class="text-sm font-bold text-slate-300">Ready for Whole-Lot Quality Scan</h5>
+                            <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">Select a commodity and run the AI scanner to verify chemical levels against the 30% marketplace selling threshold.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================================================================= -->
+        <!-- TAB 3: INVENTORY & PUBLISH TO BUYER STORE -->
         <!-- ================================================================= -->
         <div id="tab-inventory" class="tab-content hidden">
             <div class="bg-slate-800/90 rounded-3xl p-6 sm:p-7 border border-slate-700 shadow-xl">
@@ -202,7 +292,7 @@
 
 
         <!-- ================================================================= -->
-        <!-- TAB 3: BUYER ORDERS & DELIVERY FULFILLMENT -->
+        <!-- TAB 4: BUYER ORDERS & DELIVERY FULFILLMENT -->
         <!-- ================================================================= -->
         <div id="tab-orders" class="tab-content hidden">
             <div class="bg-slate-800/90 rounded-3xl p-6 sm:p-7 border border-slate-700 shadow-xl">
@@ -233,7 +323,7 @@
 
 
         <!-- ================================================================= -->
-        <!-- TAB 4: REVENUE ANALYTICS -->
+        <!-- TAB 5: REVENUE ANALYTICS -->
         <!-- ================================================================= -->
         <div id="tab-analytics" class="tab-content hidden">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -250,38 +340,42 @@
 
     </div>
 
-    <!-- PUBLISH PRODUCT MODAL (Seller -> Buyer Workflow) -->
-    <div id="publishProductModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 text-white rounded-3xl max-w-lg w-full p-7 shadow-2xl border border-slate-700 relative animate-scaleIn">
+    <!-- PUBLISH PRODUCT MODAL (Seller -> Buyer Workflow with Quality Gatekeeper) -->
+    <div id="publishProductModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 text-white rounded-3xl max-w-xl w-full p-7 shadow-2xl border border-slate-700 relative animate-scaleIn my-8">
             <button onclick="closePublishProductModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <div class="flex items-center gap-3 mb-5">
+            <div class="flex items-center gap-3 mb-4">
                 <div class="w-11 h-11 rounded-2xl bg-emerald-600/20 text-emerald-400 flex items-center justify-center text-xl">
                     <i class="fa-solid fa-cart-plus"></i>
                 </div>
                 <div>
                     <h3 class="text-lg font-bold text-white">Publish to Buyer E-Mart</h3>
-                    <p class="text-xs text-slate-400">List acquired produce or agri-inputs on the marketplace</p>
+                    <p class="text-xs text-slate-400">List produce or agri-inputs with AI Quality & Chemical Inspection</p>
                 </div>
             </div>
 
             <form id="publishProductForm" onsubmit="handlePublishProductSubmit(event)" class="space-y-3.5">
                 <div>
                     <label class="block text-xs font-bold text-slate-300 mb-1">Product Title</label>
-                    <input type="text" id="prodName" required placeholder="e.g. Premium Sona Masoori Rice (Farm Fresh)" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                    <input type="text" id="prodName" oninput="handleProdNameChange()" required placeholder="e.g. Organic Farm Fresh Tomatoes" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1">Category</label>
-                        <select id="prodCategory" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
-                            <option value="3">Fresh Farm Harvest</option>
-                            <option value="1">Organic Fertilizers & Remedies</option>
-                            <option value="2">Chemical Fertilizers & Fungicides</option>
-                            <option value="4">Certified Hybrid Seeds</option>
-                            <option value="5">Smart Farming Tools</option>
+                        <select id="prodCategory" onchange="handleModalCategoryChange()" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                            <option value="1">🍎 Fruits</option>
+                            <option value="2">🥕 Vegetables</option>
+                            <option value="3">🌾 Seeds</option>
+                            <option value="4">🪴 Plants</option>
+                            <option value="9">🍚 Groceries</option>
+                            <option value="5">🏔️ Soil</option>
+                            <option value="6">🌱 Organic Fertilizers</option>
+                            <option value="7">🧪 Chemical Fertilizers</option>
+                            <option value="8">🛠️ Farming Tools</option>
                         </select>
                     </div>
                     <div>
@@ -290,35 +384,86 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <!-- AI Whole-Lot Quality Inspection Section for Categories 1, 2, 3, 4 -->
+                <div id="modalInspectionSection" class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-microscope"></i> AI Whole-Lot Quality & Chemical Gatekeeper
+                        </span>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">Max 30% Chem Limit</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button type="button" onclick="setModalScanPreset('organic')" id="modalPresetOrganic" class="py-1.5 px-2.5 rounded-lg bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold text-center transition">
+                            🍃 Approved (&le; 30% Chem)
+                        </button>
+                        <button type="button" onclick="setModalScanPreset('chemical')" id="modalPresetChemical" class="py-1.5 px-2.5 rounded-lg bg-red-600/20 border border-red-500/30 text-red-300 text-xs font-semibold text-center transition">
+                            ⚠️ Rejected (&gt; 30% Chem)
+                        </button>
+                    </div>
+
+                    <div id="modalInspectionVerdict" class="p-3 rounded-xl bg-slate-900 border border-slate-700 text-xs flex items-center justify-between">
+                        <div>
+                            <span class="font-bold text-emerald-400" id="verdictStatusText">✅ Ready: Approved Profile</span>
+                            <div class="text-[11px] text-slate-400" id="verdictDetailText">Chemical residue: 12.4% (&le; 30% Threshold)</div>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 font-bold text-[10px]" id="verdictBadge">PASSED</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3" id="modalStockAndUnitRow">
                     <div>
                         <label class="block text-xs font-bold text-slate-300 mb-1">Stock Quantity</label>
                         <input type="number" id="prodStock" required value="500" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
                     </div>
-                    <div>
+                    <div id="modalUnitContainer">
                         <label class="block text-xs font-bold text-slate-300 mb-1">Unit of Measurement</label>
-                        <input type="text" id="prodUnit" value="KG" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
+                        <input type="text" id="prodUnit" value="KG" placeholder="e.g. KG, Litre, Bag, Pack" class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-sm text-white">
                     </div>
                 </div>
 
                 <div class="flex items-center gap-2 py-1">
-                    <input type="checkbox" id="prodIsOrganic" class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
+                    <input type="checkbox" id="prodIsOrganic" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
                     <label for="prodIsOrganic" class="text-xs font-bold text-emerald-400">Certified Organic Produce / Bio-Remedy</label>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">Short Description</label>
-                    <textarea id="prodDesc" rows="2" placeholder="Naturally grown, aged 12 months, premium quality rice." class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white"></textarea>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Product Photo / Image Upload</label>
+                    <div class="relative border-2 border-dashed border-slate-700 hover:border-emerald-500 rounded-2xl p-4 text-center cursor-pointer transition bg-slate-950/60" onclick="document.getElementById('prodImageInput').click()">
+                        <input type="file" id="prodImageInput" accept="image/*" class="hidden" onchange="previewProdModalImage(this)">
+                        <div id="prodImagePreviewBox" class="hidden">
+                            <img id="prodImagePreview" src="" class="h-28 w-auto mx-auto rounded-xl object-cover border border-slate-700 shadow-md">
+                            <p class="text-[11px] text-emerald-400 font-bold mt-2"><i class="fa-solid fa-check-circle"></i> Custom image selected (Click to change)</p>
+                        </div>
+                        <div id="prodImagePlaceholder" class="space-y-1">
+                            <i class="fa-solid fa-cloud-arrow-up text-2xl text-blue-400"></i>
+                            <p class="text-xs text-slate-300 font-semibold">Click to upload product image</p>
+                            <p class="text-[10px] text-slate-500">Supports PNG, JPG, JPEG, WEBP (Any crop, seeds, fertilizers, or tools)</p>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition">
-                    Publish Live on Buyer Website
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Short Description</label>
+                    <textarea id="prodDesc" rows="2" placeholder="Naturally grown, aged 12 months, premium quality lot." class="w-full px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white"></textarea>
+                </div>
+
+                <div id="publishErrorAlert" class="hidden p-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300 text-xs font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-triangle-exclamation text-base"></i>
+                    <span id="publishErrorText">Product rejected! Chemical residue exceeds 30% threshold.</span>
+                </div>
+
+
+                <button type="submit" id="btnPublishSubmit" class="w-full py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-check-circle"></i> Publish Live on Buyer Website
                 </button>
             </form>
         </div>
     </div>
 
     <script src="/seller_website/static/js/seller.js"></script>
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/seller_website/static/js/voice_multilingual.js"></script>
 </body>
 </html>
 

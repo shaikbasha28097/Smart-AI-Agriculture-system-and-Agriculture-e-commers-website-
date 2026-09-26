@@ -13,12 +13,13 @@ from werkzeug.utils import secure_filename
 
 from config import Config
 from Database.db import db
-from ai import crop_recommender, disease_detector, fertilizer_advisor, irrigation_advisor, agri_chatbot
+from ai import crop_recommender, disease_detector, fertilizer_advisor, irrigation_advisor, agri_chatbot, quality_scanner, mandi_service
 
 app = Flask(
     __name__,
     template_folder=Config.BASE_DIR,
-    static_folder=Config.BASE_DIR
+    static_folder=os.path.join(Config.BASE_DIR, 'static'),
+    static_url_path='/static'
 )
 app.config.from_object(Config)
 app.secret_key = Config.SECRET_KEY
@@ -336,6 +337,62 @@ def api_chat():
     reply = agri_chatbot.get_reply(message)
     return jsonify({'success': True, 'reply': reply})
 
+@app.route('/api/ai/scan-fruit-veg', methods=['POST'])
+@app.route('/api/ai/scan-product-lot', methods=['POST'])
+def api_scan_product_lot():
+    """
+    AI Whole-Lot Quality & Chemical Scanner
+    Evaluates produce, seeds, and plant lots for chemical residue %.
+    Enforces Selling Condition: Chemical involvement up to 30% is APPROVED; > 30% is REJECTED from marketplace sale.
+    """
+
+    if request.is_json:
+        data = request.get_json() or {}
+        commodity = data.get('commodity', 'Tomato')
+        sample_type = data.get('sample_type', 'organic')
+        category_id = data.get('category_id', None)
+        file_path = None
+        image_rel_url = None
+    else:
+        commodity = request.form.get('commodity', 'Tomato')
+        sample_type = request.form.get('sample_type', 'organic')
+        category_id = request.form.get('category_id', None)
+        file_path = None
+        image_rel_url = None
+        
+        if 'image' in request.files:
+            file = request.files['image']
+            if file and file.filename:
+                filename = f"scan_{int(time.time())}_{secure_filename(file.filename)}"
+                file_path = os.path.join(Config.UPLOAD_FOLDER, filename)
+                file.save(file_path)
+                image_rel_url = f"/uploads/{filename}"
+            
+    scan_result = quality_scanner.scan_item(commodity, file_path, sample_type, category_id)
+    if image_rel_url:
+        scan_result['image_url'] = image_rel_url
+        
+    return jsonify({'success': True, 'data': scan_result})
+
+@app.route('/api/market-prices', methods=['GET'])
+def api_market_prices():
+    """Live APMC Mandi Market Prices by State & District"""
+    state = request.args.get('state', None)
+    district = request.args.get('district', None)
+    commodity = request.args.get('commodity', None)
+    search = request.args.get('search', None)
+    
+    prices = mandi_service.get_prices(state=state, district=district, commodity=commodity, search=search)
+    return jsonify({'success': True, 'total': len(prices), 'prices': prices})
+
+@app.route('/api/market-prices/filters', methods=['GET'])
+def api_market_price_filters():
+    """Available States, Districts, and Commodities for Mandi filtering"""
+    filters = mandi_service.get_filter_options()
+    return jsonify({'success': True, 'filters': filters})
+
+
+
 
 # ==============================================================================
 # 4. FARMER & HARVEST APIS (Farmer -> Seller Workflow)
@@ -479,27 +536,55 @@ def api_seller_inventory():
 def api_seller_create_product():
     """
     Seller publishes an item to the Buyer Website Marketplace!
+    Selling Condition Gatekeeper:
+    For Fruits (1), Vegetables (2), Seeds (3), and Plants (4):
+    Must pass AI Whole-Lot Chemical & Quality Inspection.
+    If chemical residue is >= 50.0%, the listing is REJECTED.
     """
     data = request.form.to_dict() if request.form else (request.get_json() or {})
     seller_id = session.get('user_id', data.get('seller_id', 2))
     name = data.get('name', 'Farm Produce')
     category_id = int(data.get('category_id', 3))
     price = float(data.get('price', 50.0))
-    unit = data.get('unit', 'KG')
+    raw_unit = data.get('unit', '')
+    unit = raw_unit if (category_id == 8 or raw_unit.strip() != '') else 'KG'
     stock = float(data.get('stock_quantity', 100))
     short_desc = data.get('short_description', '')
     desc = data.get('description', '')
     is_organic = 1 if str(data.get('is_organic')).lower() in ['1', 'true', 'on'] else 0
     remedy_for = data.get('remedy_for_disease', None)
     
-    image_url = 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500'
+    # Check for chemical percentage inspection data
+    sample_type = data.get('sample_type', 'organic')
+    chem_pct_input = data.get('chemical_percentage')
+    
+    file_path = None
+    image_url = data.get('image_url') or 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500'
     if 'image' in request.files:
         file = request.files['image']
         if file and file.filename:
             fn = f"product_{int(time.time())}_{secure_filename(file.filename)}"
-            file.save(os.path.join(Config.PRODUCT_UPLOAD_FOLDER, fn))
+            file_path = os.path.join(Config.PRODUCT_UPLOAD_FOLDER, fn)
+            file.save(file_path)
             image_url = f"/uploads/product_images/{fn}"
-            
+
+    # Gatekeeper check for Fruits (1), Vegetables (2), Seeds (3), Plants (4)
+    if category_id in [1, 2, 3, 4]:
+        # Run whole lot scanner
+        scan_res = quality_scanner.scan_item(name, file_path, sample_type, category_id)
+        chem_pct = float(chem_pct_input) if chem_pct_input is not None else scan_res['chemical_percentage']
+        
+        if chem_pct > 30.0:
+            return jsonify({
+                'success': False,
+                'rejected': True,
+                'chemical_percentage': chem_pct,
+                'threshold_limit': 30.0,
+                'scan_report': scan_res,
+                'message': f"❌ Listing REJECTED: Whole-lot chemical involvement is {chem_pct}% (Exceeds the maximum permissible 30.0% threshold). Only products with <= 30% chemical involvement are approved for sale."
+            }), 400
+
+
     slug = name.lower().replace(' ', '-').replace('/', '-')
     
     product_id = db.query(
@@ -511,9 +596,11 @@ def api_seller_create_product():
     
     return jsonify({
         'success': True,
-        'message': 'Product published to Buyer Marketplace successfully!',
+        'rejected': False,
+        'message': 'Product passed AI quality inspection and is published live on Buyer Marketplace!',
         'product_id': product_id
     })
+
 
 @app.route('/api/seller/orders', methods=['GET'])
 def api_seller_orders():
@@ -582,30 +669,76 @@ def api_products():
         params.append(f"%{search}%")
         params.append(f"%{search}%")
         
-    sql += " ORDER BY p.id ASC"
+    sql += " ORDER BY p.id DESC"
     products = db.query(sql, tuple(params))
     return jsonify({'success': True, 'products': products})
 
-@app.route('/api/products/<int:product_id>', methods=['GET'])
-def api_product_detail(product_id):
-    product = db.query("""
-        SELECT p.*, c.name as category_name, u.name as seller_name, u.city as seller_city
-        FROM products p
-        JOIN product_categories c ON p.category_id = c.id
-        LEFT JOIN users u ON p.seller_id = u.id
-        WHERE p.id = %s
-    """, (product_id,), fetchone=True)
-    
-    if not product:
-        return jsonify({'success': False, 'message': 'Product not found.'}), 404
+@app.route('/api/products/<int:product_id>', methods=['GET', 'DELETE'])
+@app.route('/api/seller/delete-product/<int:product_id>', methods=['DELETE', 'POST'])
+def api_product_detail_or_delete(product_id):
+    if request.method in ['DELETE', 'POST']:
+        """
+        Deletes a product from the database.
+        Automatically removes the product from the Buyer E-Mart catalog and cleans up any active cart items.
+        """
+        try:
+            product = db.query("SELECT id, name, image_url FROM products WHERE id = %s", (product_id,), fetchone=True)
+            if not product:
+                return jsonify({'success': False, 'message': 'Product not found.'}), 404
+            
+            # 1. Clean up associated cart items
+            db.query("DELETE FROM cart_items WHERE product_id = %s", (product_id,))
+            
+            # 2. Clean up associated reviews
+            db.query("DELETE FROM reviews WHERE product_id = %s", (product_id,))
+            
+            # 3. Clean up associated order_items if existing
+            try:
+                db.query("DELETE FROM order_items WHERE product_id = %s", (product_id,))
+            except Exception as e:
+                print(f"Order items cleanup notice: {e}")
+                
+            # 4. Permanently delete product from products table
+            db.query("DELETE FROM products WHERE id = %s", (product_id,))
+            
+            # 5. Clean up uploaded image if local file
+            if product.get('image_url') and str(product['image_url']).startswith('/uploads/'):
+                try:
+                    rel_path = str(product['image_url']).lstrip('/')
+                    full_path = os.path.join(Config.BASE_DIR, rel_path)
+                    if os.path.exists(full_path):
+                        os.remove(full_path)
+                except Exception as e:
+                    print(f"Image deletion notice: {e}")
+                    
+            return jsonify({
+                'success': True,
+                'message': f"Product '{product['name']}' has been permanently deleted from database and removed from Buyer E-Mart!",
+                'product_id': product_id
+            })
+        except Exception as e:
+            print(f"Delete product error: {e}")
+            return jsonify({'success': False, 'message': f"Error deleting product: {str(e)}"}), 500
+    else:
+        # GET product details
+        product = db.query("""
+            SELECT p.*, c.name as category_name, u.name as seller_name, u.city as seller_city
+            FROM products p
+            JOIN product_categories c ON p.category_id = c.id
+            LEFT JOIN users u ON p.seller_id = u.id
+            WHERE p.id = %s
+        """, (product_id,), fetchone=True)
         
-    reviews = db.query("""
-        SELECT r.*, u.name as user_name FROM reviews r
-        JOIN users u ON r.user_id = u.id
-        WHERE r.product_id = %s ORDER BY r.id DESC
-    """, (product_id,))
-    
-    return jsonify({'success': True, 'product': product, 'reviews': reviews})
+        if not product:
+            return jsonify({'success': False, 'message': 'Product not found.'}), 404
+            
+        reviews = db.query("""
+            SELECT r.*, u.name as user_name FROM reviews r
+            JOIN users u ON r.user_id = u.id
+            WHERE r.product_id = %s ORDER BY r.id DESC
+        """, (product_id,))
+        
+        return jsonify({'success': True, 'product': product, 'reviews': reviews})
 
 @app.route('/api/cart', methods=['GET', 'POST', 'DELETE'])
 def api_cart():

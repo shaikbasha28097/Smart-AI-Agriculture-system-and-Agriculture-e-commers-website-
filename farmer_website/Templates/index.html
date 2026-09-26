@@ -39,17 +39,18 @@
 
             <!-- Ecosystem Switcher Links -->
             <div class="flex items-center space-x-3 text-xs font-semibold">
-                <a href="/" class="text-slate-500 hover:text-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-50 transition">
-                    <i class="fa-solid fa-home"></i> Ecosystem Hub
+                <div class="lang-selector-container"></div>
+                <a href="/" class="text-slate-500 hover:text-emerald-700 px-3 py-1.5 rounded-lg hover:bg-emerald-50 transition hidden sm:inline-block">
+                    <i class="fa-solid fa-home"></i> <span data-i18n="portal_hub">Ecosystem Hub</span>
                 </a>
                 <a href="/seller" class="text-slate-500 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-store"></i> Seller Portal
+                    <i class="fa-solid fa-store"></i> <span data-i18n="seller_portal">Seller Portal</span>
                 </a>
                 <a href="/buyer" class="text-slate-500 hover:text-amber-700 px-3 py-1.5 rounded-lg hover:bg-amber-50 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-cart-shopping"></i> Buyer E-Mart
+                    <i class="fa-solid fa-cart-shopping"></i> <span data-i18n="buyer_emart">Buyer E-Mart</span>
                 </a>
                 <button onclick="openAuthModal('login')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition">
-                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Farmer Login
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i> <span data-i18n="farmer_login">Farmer Login</span>
                 </button>
             </div>
         </div>
@@ -269,6 +270,8 @@
 
     <!-- Shared Farmer Scripts -->
     <script src="/farmer_website/static/js/farmer.js"></script>
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/farmer_website/static/js/voice_multilingual.js"></script>
 </body>
 </html>
 

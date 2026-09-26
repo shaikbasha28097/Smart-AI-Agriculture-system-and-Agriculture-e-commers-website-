@@ -38,17 +38,18 @@
 
             <!-- Ecosystem Switcher Links -->
             <div class="flex items-center space-x-3 text-xs font-semibold">
-                <a href="/" class="text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition">
-                    <i class="fa-solid fa-home"></i> Ecosystem Hub
+                <div class="lang-selector-container"></div>
+                <a href="/" class="text-slate-400 hover:text-white px-3 py-1.5 rounded-lg hover:bg-slate-800 transition hidden sm:inline-block">
+                    <i class="fa-solid fa-home"></i> <span data-i18n="portal_hub">Ecosystem Hub</span>
                 </a>
                 <a href="/farmer" class="text-slate-400 hover:text-emerald-400 px-3 py-1.5 rounded-lg hover:bg-slate-800 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-seedling"></i> Farmer Portal
+                    <i class="fa-solid fa-seedling"></i> <span data-i18n="farmer_portal">Farmer Portal</span>
                 </a>
                 <a href="/buyer" class="text-slate-400 hover:text-amber-400 px-3 py-1.5 rounded-lg hover:bg-slate-800 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-cart-shopping"></i> Buyer E-Mart
+                    <i class="fa-solid fa-cart-shopping"></i> <span data-i18n="buyer_emart">Buyer E-Mart</span>
                 </a>
                 <button onclick="openAuthModal('login')" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/30 transition">
-                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Seller Login
+                    <i class="fa-solid fa-right-to-bracket mr-1"></i> <span data-i18n="seller_login">Seller Login</span>
                 </button>
             </div>
         </div>
@@ -224,6 +225,8 @@
     </footer>
 
     <script src="/seller_website/static/js/seller.js"></script>
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/seller_website/static/js/voice_multilingual.js"></script>
 </body>
 </html>
 

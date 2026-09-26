@@ -43,11 +43,12 @@
 
             <!-- Inter-Portal Nav Links & User Profile -->
             <div class="flex items-center space-x-3">
+                <div class="lang-selector-container"></div>
                 <a href="/" class="text-xs font-semibold text-slate-500 hover:text-emerald-700 px-2.5 py-1.5 rounded-lg hover:bg-slate-100 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-house"></i> Portal Hub
+                    <i class="fa-solid fa-house"></i> <span data-i18n="portal_hub">Portal Hub</span>
                 </a>
                 <a href="/buyer" class="text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-cart-shopping"></i> <span>Buyer E-Mart</span>
+                    <i class="fa-solid fa-cart-shopping"></i> <span data-i18n="buyer_emart">Buyer E-Mart</span>
                 </a>
                 <div class="h-5 w-px bg-slate-200"></div>
                 <div class="flex items-center space-x-2">
@@ -256,9 +257,14 @@
                                     <span id="resCropName" class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Crop: Tomato</span>
                                     <h3 id="resDiseaseName" class="text-2xl font-black text-slate-900 mt-0.5">Early Blight (Alternaria solani)</h3>
                                 </div>
-                                <div class="px-4 py-2 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-800 text-right">
-                                    <div class="text-[10px] uppercase font-bold text-emerald-700">AI Confidence</div>
-                                    <div id="resConfidence" class="text-xl font-black">94.6%</div>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="speakDiseaseResult()" title="Listen in your language" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition">
+                                        <i class="fa-solid fa-volume-high"></i> <span data-i18n="listen_audio">Listen in Audio</span>
+                                    </button>
+                                    <div class="px-3.5 py-1.5 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-800 text-right">
+                                        <div class="text-[10px] uppercase font-bold text-emerald-700">AI Confidence</div>
+                                        <div id="resConfidence" class="text-lg font-black">94.6%</div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -398,8 +404,13 @@
                                 <span class="text-xs font-bold uppercase tracking-wider text-emerald-200">#1 Top Recommended Crop</span>
                                 <div class="flex items-center justify-between mt-1">
                                     <h2 id="topRecCrop" class="text-3xl font-black text-white">Rice (Paddy)</h2>
-                                    <div class="px-3.5 py-1.5 rounded-xl bg-white/20 text-white font-bold text-sm">
-                                        <span id="topRecConfidence">96.8%</span> Match
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" onclick="speakCropRecResult()" title="Listen in your language" class="px-3 py-1.5 rounded-xl bg-white text-emerald-800 text-xs font-bold shadow flex items-center gap-1.5 hover:bg-emerald-50 transition">
+                                            <i class="fa-solid fa-volume-high"></i> <span data-i18n="listen_audio">Listen</span>
+                                        </button>
+                                        <div class="px-3.5 py-1.5 rounded-xl bg-white/20 text-white font-bold text-sm">
+                                            <span id="topRecConfidence">96.8%</span> Match
+                                        </div>
                                     </div>
                                 </div>
 
@@ -745,6 +756,8 @@
 
     <!-- Scripts -->
     <script src="/farmer_website/static/js/farmer.js"></script>
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/farmer_website/static/js/voice_multilingual.js"></script>
 </body>
 </html>
 

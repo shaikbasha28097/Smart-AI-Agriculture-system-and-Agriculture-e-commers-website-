@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agri E-Mart | Fresh Farm Produce & Agro-Inputs Marketplace</title>
+    <title>Agri E-Mart | Produce, Chemical Scanner & Live Mandi Prices</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -34,7 +34,7 @@
                     </div>
                     <div>
                         <span class="text-xl font-bold text-slate-900 tracking-tight leading-none block">Agri E-Mart</span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-orange-600 block mt-0.5">Farm-to-Fork & Agri-Inputs</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-orange-600 block mt-0.5">9 Services • AI Purity Scanner • Mandi Prices</span>
                     </div>
                 </a>
             </div>
@@ -42,21 +42,22 @@
             <!-- Search Bar -->
             <div class="hidden md:flex flex-1 max-w-md mx-4">
                 <div class="relative w-full">
-                    <input type="text" id="buyerSearchInput" oninput="handleSearch(this.value)" placeholder="Search fresh vegetables, rice, organic fertilizers, seeds..." class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none bg-slate-50/80">
+                    <input type="text" id="buyerSearchInput" oninput="handleSearch(this.value)" placeholder="Search fruits, vegetables, seeds, groceries, soil, fertilizers, tools..." class="w-full pl-10 pr-4 py-2 rounded-full border border-slate-300 text-xs focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none bg-slate-50/80">
                     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
                 </div>
             </div>
 
             <!-- Inter-Portal Links & Cart Trigger -->
             <div class="flex items-center space-x-3 text-xs font-semibold">
+                <div class="lang-selector-container"></div>
                 <a href="/" class="text-slate-500 hover:text-orange-600 px-2.5 py-1.5 rounded-lg hover:bg-orange-50 transition hidden sm:inline-block">
-                    <i class="fa-solid fa-house"></i> Portal Hub
+                    <i class="fa-solid fa-house"></i> <span data-i18n="portal_hub">Portal Hub</span>
                 </a>
                 <a href="/farmer" class="text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition hidden sm:inline-block">
-                    <i class="fa-solid fa-seedling"></i> Farmer AI
+                    <i class="fa-solid fa-seedling"></i> <span data-i18n="farmer_portal">Farmer AI</span>
                 </a>
                 <a href="/seller" class="text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded-lg transition hidden sm:inline-block">
-                    <i class="fa-solid fa-store"></i> Seller Portal
+                    <i class="fa-solid fa-store"></i> <span data-i18n="seller_portal">Seller Portal</span>
                 </a>
 
                 <!-- Cart Button -->
@@ -73,35 +74,68 @@
         </div>
     </header>
 
-    <!-- Category Filter Bar -->
-    <div class="bg-white border-b border-slate-200 shadow-sm overflow-x-auto py-2.5 px-4">
-        <div class="max-w-7xl mx-auto flex items-center space-x-2 text-xs font-semibold">
-            <button onclick="filterCategory(null)" class="category-btn active px-3.5 py-1.5 rounded-full bg-orange-600 text-white transition whitespace-nowrap">
-                All Products
-            </button>
-            <button onclick="filterCategory(3)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
-                🥕 Fresh Farm Produce
-            </button>
-            <button onclick="filterCategory(1)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
-                🌱 Organic Fertilizers & Remedies
-            </button>
-            <button onclick="filterCategory(2)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
-                🧪 Chemical Fertilizers & Fungicides
-            </button>
-            <button onclick="filterCategory(4)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
-                🌾 Certified Hybrid Seeds
-            </button>
-            <button onclick="filterCategory(5)" class="category-btn px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 transition whitespace-nowrap">
-                🛠️ Smart Farming Tools
-            </button>
+    <!-- Top Mode Navigation Bar (Store Catalog vs AI Quality Scanner vs Live Mandi Prices) -->
+    <div class="bg-gradient-to-r from-orange-600 via-amber-600 to-orange-700 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-x-auto py-2.5 gap-3">
+            <div class="flex items-center space-x-2 text-xs font-bold whitespace-nowrap">
+                <button onclick="switchBuyerTab('catalog')" id="topTab-catalog" class="buyer-top-tab active px-4 py-2 rounded-xl bg-white text-orange-700 shadow-md flex items-center gap-2 transition">
+                    <i class="fa-solid fa-cart-shopping"></i> <span>E-Mart Store (9 Services)</span>
+                </button>
+                <button onclick="switchBuyerTab('scanner')" id="topTab-scanner" class="buyer-top-tab px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white flex items-center gap-2 transition">
+                    <i class="fa-solid fa-microchip"></i> <span>AI Fruit & Veg Chemical/TDS Scanner</span>
+                    <span class="px-1.5 py-0.5 rounded bg-emerald-400 text-slate-900 text-[10px] font-extrabold uppercase">AI Tool</span>
+                </button>
+                <button onclick="switchBuyerTab('mandi')" id="topTab-mandi" class="buyer-top-tab px-4 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white flex items-center gap-2 transition">
+                    <i class="fa-solid fa-chart-line"></i> <span>Live APMC Mandi Market Prices</span>
+                    <span class="px-1.5 py-0.5 rounded bg-amber-300 text-slate-900 text-[10px] font-extrabold uppercase">Gov Rates</span>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Main Store Catalog -->
-    <main class="flex-1 py-8 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto">
-            
-            <!-- Farmer AI Disease Referral Banner (Visible if referred with product_id) -->
+    <!-- ===================================================================== -->
+    <!-- 1. TAB: E-MART STORE CATALOG (9 Divided Services) -->
+    <!-- ===================================================================== -->
+    <div id="buyer-tab-catalog" class="buyer-tab-view flex-1">
+        
+        <!-- Category Filter Bar (9 Services) -->
+        <div class="bg-white border-b border-slate-200 shadow-sm overflow-x-auto py-3 px-4 sticky top-16 z-30">
+            <div class="max-w-7xl mx-auto flex items-center space-x-2 text-xs font-bold">
+                <button onclick="filterCategory(null)" id="catBtn-all" class="category-btn active px-4 py-2 rounded-full bg-orange-600 text-white transition whitespace-nowrap shadow-sm">
+                    <i class="fa-solid fa-border-all mr-1"></i> All Services
+                </button>
+                <button onclick="filterCategory(1)" id="catBtn-1" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🍎 Fruits
+                </button>
+                <button onclick="filterCategory(2)" id="catBtn-2" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🥕 Vegetables
+                </button>
+                <button onclick="filterCategory(3)" id="catBtn-3" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🌾 Seeds
+                </button>
+                <button onclick="filterCategory(4)" id="catBtn-4" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🪴 Plants
+                </button>
+                <button onclick="filterCategory(9)" id="catBtn-9" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🍚 Groceries
+                </button>
+                <button onclick="filterCategory(5)" id="catBtn-5" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🏔️ Soil
+                </button>
+                <button onclick="filterCategory(6)" id="catBtn-6" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🌱 Organic Fertilizers
+                </button>
+                <button onclick="filterCategory(7)" id="catBtn-7" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🧪 Chemical Fertilizers
+                </button>
+                <button onclick="filterCategory(8)" id="catBtn-8" class="category-btn px-4 py-2 rounded-full bg-slate-100 text-slate-700 hover:bg-orange-50 hover:text-orange-600 transition whitespace-nowrap">
+                    🛠️ Farming Tools
+                </button>
+            </div>
+        </div>
+
+        <main class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+            <!-- Farmer AI Disease Referral Banner -->
             <div id="aiReferralBanner" class="hidden bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 text-white rounded-2xl p-5 mb-8 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl">
@@ -119,11 +153,11 @@
             <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
                 <div>
                     <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Agricultural Marketplace & E-Mart</h1>
-                    <p class="text-xs text-slate-500 mt-0.5">Direct farm-gate harvests, certified bio-fertilizers, and crop protection sprays.</p>
+                    <p class="text-xs text-slate-500 mt-0.5">Direct farm-gate harvests, certified bio-fertilizers, seeds, plants, soil, and tools.</p>
                 </div>
                 
                 <div class="flex items-center space-x-3 text-xs font-semibold">
-                    <label class="flex items-center gap-2 cursor-pointer select-none bg-emerald-50 text-emerald-800 px-3 py-1.5 rounded-xl border border-emerald-200">
+                    <label class="flex items-center gap-2 cursor-pointer select-none bg-emerald-50 text-emerald-800 px-3.5 py-2 rounded-xl border border-emerald-200">
                         <input type="checkbox" id="chkOnlyOrganic" onchange="handleOrganicToggle(this.checked)" class="rounded text-emerald-600">
                         <span>Only Certified Organic</span>
                     </label>
@@ -134,9 +168,310 @@
             <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Dynamic products loaded via JS -->
             </div>
+        </main>
+    </div>
 
+
+    <!-- ===================================================================== -->
+    <!-- 2. TAB: AI FRUIT & VEGETABLE CHEMICAL, PESTICIDE & TDS SCANNER -->
+    <!-- ===================================================================== -->
+    <div id="buyer-tab-scanner" class="buyer-tab-view hidden flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        
+        <div class="bg-gradient-to-r from-teal-800 via-emerald-800 to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-white/20 text-emerald-100 text-xs font-bold uppercase tracking-wider backdrop-blur">
+                        AI Food Safety & Purity Engine 2026
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 text-white">
+                        Fruit & Vegetable Chemical / TDS Scanner 🔬🍎
+                    </h2>
+                    <p class="text-emerald-100 text-xs sm:text-sm mt-1 max-w-2xl">
+                        Upload or photograph any fruit or vegetable to analyze chemical residue (PPM), artificial calcium carbide ripening, surface wax coating, TDS cell purity score, and verify whether it is 100% Genuine Organic!
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="p-4 rounded-2xl bg-white/10 backdrop-blur border border-white/20 text-center">
+                        <span class="text-2xl font-black text-amber-300 block"><i class="fa-solid fa-shield-virus"></i></span>
+                        <span class="text-[11px] font-bold text-emerald-100 block mt-0.5">Pesticide & TDS Detox</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </main>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Scanner Upload & Control Form -->
+            <div class="lg:col-span-5 bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 shadow-sm">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Upload Fruit / Vegetable</h3>
+                        <p class="text-xs text-slate-500">Spectrometric & Computer Vision Chemical Analysis</p>
+                    </div>
+                </div>
+
+                <form id="fruitVegScanForm" onsubmit="handleFruitVegScanSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Select Fruit or Vegetable</label>
+                        <select id="scanCommoditySelect" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-teal-500 outline-none">
+                            <option value="Tomato">🍅 Tomato (Red / Hybrid)</option>
+                            <option value="Apple">🍎 Apple (Royal Delicious / Kashmiri)</option>
+                            <option value="Mango">🥭 Mango (Alphonso / Banganapalli)</option>
+                            <option value="Banana">🍌 Banana (Robusta / G9)</option>
+                            <option value="Potato">🥔 Potato (Yellow Farm)</option>
+                            <option value="Chilli">🌶️ Green Chilli (G4 Spicy)</option>
+                        </select>
+                    </div>
+
+                    <!-- Image Upload Box -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Upload Photo / Snap Image</label>
+                        <div id="scanDropzone" onclick="document.getElementById('fruitVegImageInput').click()" class="border-2 border-dashed border-teal-300 hover:border-teal-500 bg-teal-50/40 hover:bg-teal-50 rounded-2xl p-6 text-center cursor-pointer transition">
+                            <input type="file" id="fruitVegImageInput" accept="image/*" class="hidden" onchange="previewFruitVegImage(this)">
+                            <div id="scanDropzoneContent">
+                                <div class="w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center text-xl mx-auto mb-2">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <span class="text-xs font-bold text-teal-800 block">Click to upload fruit/vegetable image</span>
+                                <span class="text-[11px] text-slate-400">PNG, JPG, JPEG from your device or camera</span>
+                            </div>
+                            <div id="scanImagePreviewContainer" class="hidden">
+                                <img id="scanPreviewImg" class="max-h-48 mx-auto rounded-xl shadow-sm border border-teal-200" src="" alt="Fruit Preview">
+                                <span class="text-xs text-teal-600 font-bold mt-2 block">Change Image</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Sample Testing Presets -->
+                    <div>
+                        <span class="text-xs font-semibold text-slate-500 block mb-2">Or test instant sample benchmarks:</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button type="button" onclick="loadSampleScan('tomato', 'organic')" class="p-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[11px] font-bold text-emerald-800 border border-emerald-200 transition text-left">
+                                🍅 Organic Vine Tomato
+                            </button>
+                            <button type="button" onclick="loadSampleScan('apple', 'chemical')" class="p-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-[11px] font-bold text-rose-800 border border-rose-200 transition text-left">
+                                🍎 Waxed Chemical Apple
+                            </button>
+                            <button type="button" onclick="loadSampleScan('mango', 'chemical')" class="p-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-[11px] font-bold text-amber-800 border border-amber-200 transition text-left">
+                                🥭 Carbide Ripened Mango
+                            </button>
+                            <button type="button" onclick="loadSampleScan('banana', 'organic')" class="p-2 rounded-xl bg-yellow-50 hover:bg-yellow-100 text-[11px] font-bold text-yellow-900 border border-yellow-200 transition text-left">
+                                🍌 Natural Tree Banana
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnRunChemicalScan" class="w-full py-3.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-sm shadow-lg shadow-teal-600/30 flex items-center justify-center gap-2 transition">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Run AI Chemical & TDS Purity Scan
+                    </button>
+                </form>
+            </div>
+
+            <!-- Scanner Output Report Card -->
+            <div class="lg:col-span-7">
+                <div id="scanResultCard" class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200 shadow-sm min-h-full flex flex-col justify-between">
+                    
+                    <!-- Placeholder State -->
+                    <div id="scanPlaceholder" class="text-center py-20">
+                        <div class="w-16 h-16 rounded-3xl bg-slate-100 text-slate-400 flex items-center justify-center text-2xl mx-auto mb-4">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-700">No Fruit / Vegetable Scanned Yet</h4>
+                        <p class="text-xs text-slate-500 max-w-md mx-auto mt-1">
+                            Select a commodity and upload a photo or pick one of the sample benchmark buttons to instantly test for synthetic chemicals, TDS mineral purity, ripening mode, and safety score.
+                        </p>
+                    </div>
+
+                    <!-- Active Diagnostic Result State -->
+                    <div id="scanActiveResult" class="hidden space-y-6">
+                        
+                        <!-- Header Result -->
+                        <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200">
+                            <div>
+                                <span id="scanCommodityBadge" class="text-xs font-bold text-teal-700 uppercase tracking-wider">COMMODITY: TOMATO</span>
+                                <h3 id="scanPurityTitle" class="text-2xl font-black text-slate-900 mt-0.5">100% Certified Organic</h3>
+                            </div>
+                            <div class="px-3.5 py-1.5 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-800 text-right">
+                                <div class="text-[10px] uppercase font-bold text-emerald-700">AI Confidence</div>
+                                <div id="scanConfidence" class="text-lg font-black">98.4%</div>
+                            </div>
+                        </div>
+
+                        <!-- 4 Metric Cards: Chemical PPM, TDS Score, Ripening Mode, Freshness -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Chemical Residue</span>
+                                <div id="scanChemicalPpm" class="text-base font-black text-slate-800 mt-0.5">< 0.02 ppm</div>
+                                <span id="scanChemicalSub" class="text-[10px] font-bold text-emerald-600">Bio-Safe / Organic</span>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">TDS Purity Index</span>
+                                <div id="scanTdsScore" class="text-base font-black text-teal-700 mt-0.5">138 mg/L</div>
+                                <span class="text-[10px] font-bold text-teal-600">Optimal Cell Sap</span>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Ripening Mode</span>
+                                <div id="scanRipeningMode" class="text-xs font-bold text-slate-800 mt-1">Natural Vine</div>
+                                <span class="text-[10px] text-slate-500">Carbide Free</span>
+                            </div>
+
+                            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">Freshness Index</span>
+                                <div id="scanFreshnessPct" class="text-base font-black text-emerald-600 mt-0.5">98.5%</div>
+                                <span id="scanShelfLife" class="text-[10px] text-slate-500">7-9 Days Shelf</span>
+                            </div>
+                        </div>
+
+                        <!-- Pesticide & Wax Breakdown -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-2xl bg-teal-50 border border-teal-200 text-xs">
+                                <strong class="text-teal-900 block font-bold mb-1"><i class="fa-solid fa-flask-vial text-teal-600 mr-1"></i> Synthetic Pesticide Analysis:</strong>
+                                <span id="scanPesticideDesc" class="text-teal-950 font-medium">Zero Synthetic Pesticides Detected</span>
+                            </div>
+
+                            <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs">
+                                <strong class="text-amber-900 block font-bold mb-1"><i class="fa-solid fa-spray-can-sparkles text-amber-600 mr-1"></i> Surface Wax Coating Check:</strong>
+                                <span id="scanWaxDesc" class="text-amber-950 font-medium">No Synthetic Wax Detected (Natural Cutin)</span>
+                            </div>
+                        </div>
+
+                        <!-- Consumer Detox & Washing Guide -->
+                        <div class="p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-950">
+                            <strong class="text-blue-900 block font-bold mb-1"><i class="fa-solid fa-hand-holding-droplet text-blue-600 mr-1"></i> Recommended Washing & Detox Protocol:</strong>
+                            <p id="scanDetoxGuide" class="leading-relaxed"></p>
+                        </div>
+
+                        <!-- BUY VERIFIED 100% ORGANIC REPLACEMENT LINK -->
+                        <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-700 to-teal-800 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div>
+                                <span class="text-[10px] uppercase font-bold text-emerald-200">Verified Safe Produce on Agri E-Mart</span>
+                                <h4 id="scanOrganicProdName" class="text-base font-extrabold text-white">Organic Farm Fresh Tomatoes (Vine Ripened)</h4>
+                                <span class="text-xs text-emerald-100">Guaranteed 100% Zero-Residue Certified Produce</span>
+                            </div>
+                            <a id="btnBuyOrganicProduce" href="/buyer" class="px-5 py-2.5 rounded-xl bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs shadow-md flex items-center gap-1.5 transition whitespace-nowrap">
+                                <i class="fa-solid fa-cart-shopping"></i> <span>Buy Pure Organic Now</span>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ===================================================================== -->
+    <!-- 3. TAB: LIVE APMC MANDI MARKET PRICES (Official Gov States & Districts) -->
+    <!-- ===================================================================== -->
+    <div id="buyer-tab-mandi" class="buyer-tab-view hidden flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        
+        <!-- Mandi Hero Banner -->
+        <div class="bg-gradient-to-r from-amber-700 via-orange-700 to-amber-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl mb-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                    <span class="px-3 py-1 rounded-full bg-white/20 text-amber-100 text-xs font-bold uppercase tracking-wider backdrop-blur">
+                        Official Gov Mandi Network • Agmarknet / e-NAM
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold mt-2 text-white">
+                        Live APMC Mandi Market Prices 📊🌾
+                    </h2>
+                    <p class="text-amber-100 text-xs sm:text-sm mt-1 max-w-2xl">
+                        Real-time wholesale & retail commodity prices across Indian States & Districts (Telangana, Andhra Pradesh, Maharashtra, Karnataka, Tamil Nadu, Uttar Pradesh, Gujarat, Punjab).
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="px-3.5 py-2 rounded-2xl bg-white/20 backdrop-blur text-xs font-bold flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-emerald-300 animate-pulse"></i> Live Data Feed 2026
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">State</label>
+                    <select id="mandiStateFilter" onchange="handleMandiStateChange(this.value)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-orange-500 outline-none">
+                        <option value="all">All States</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Punjab">Punjab</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">District / Mandi Yard</label>
+                    <select id="mandiDistrictFilter" onchange="loadMandiPrices()" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-orange-500 outline-none">
+                        <option value="all">All Districts</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Commodity</label>
+                    <select id="mandiCommodityFilter" onchange="loadMandiPrices()" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-orange-500 outline-none">
+                        <option value="all">All Commodities</option>
+                        <option value="Tomato">🍅 Tomato</option>
+                        <option value="Potato">🥔 Potato</option>
+                        <option value="Onion">🧅 Onion</option>
+                        <option value="Mango">🥭 Mango</option>
+                        <option value="Apple">🍎 Apple</option>
+                        <option value="Banana">🍌 Banana</option>
+                        <option value="Chilli">🌶️ Green Chilli</option>
+                        <option value="Rice">🌾 Rice / Paddy</option>
+                        <option value="Wheat">🌾 Wheat</option>
+                        <option value="Cotton">🌱 Cotton</option>
+                        <option value="Orange">🍊 Orange</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Search Mandi or Commodity</label>
+                    <input type="text" id="mandiSearchInput" oninput="loadMandiPrices()" placeholder="e.g. Hyderabad, Lasalgaon..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold focus:ring-2 focus:ring-orange-500 outline-none">
+                </div>
+            </div>
+        </div>
+
+        <!-- Mandi Prices Table -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-slate-50">
+                <h3 class="text-sm font-bold text-slate-800"><i class="fa-solid fa-list-check text-orange-600 mr-1.5"></i> Real-Time APMC Mandi Rates</h3>
+                <span id="mandiTotalCount" class="text-xs font-semibold text-slate-500">Showing 24 Market Yards</span>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-100 text-slate-600 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                        <tr>
+                            <th class="py-3 px-4">Commodity & Variety</th>
+                            <th class="py-3 px-4">State & District</th>
+                            <th class="py-3 px-4">APMC Market Yard</th>
+                            <th class="py-3 px-4 text-right">Min Price (₹/Q)</th>
+                            <th class="py-3 px-4 text-right">Max Price (₹/Q)</th>
+                            <th class="py-3 px-4 text-right">Modal Rate (₹/KG)</th>
+                            <th class="py-3 px-4 text-center">Trend</th>
+                            <th class="py-3 px-4">Gov Source</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mandiPricesTableBody" class="divide-y divide-slate-100 font-medium">
+                        <!-- Dynamic Mandi rates loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
 
     <!-- Slide-Out Shopping Cart Drawer -->
     <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
@@ -239,12 +574,67 @@
         </div>
     </div>
 
+    <!-- Product Detail & Full Inspection View Modal -->
+    <div id="productDetailModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative animate-scaleIn my-8">
+            <button onclick="closeProductDetailModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-700 text-xl z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-square shadow-inner border border-slate-200">
+                    <img id="modalDetailImage" src="" class="w-full h-full object-cover" alt="Product Image">
+                    <div id="modalDetailBadges" class="absolute top-3 left-3 flex flex-col gap-1.5"></div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-1">
+                            <span id="modalDetailCategory" class="text-xs uppercase font-extrabold text-orange-600 tracking-wider">Vegetables</span>
+                            <span id="modalDetailStock" class="text-xs font-semibold text-slate-500">In Stock</span>
+                        </div>
+                        <h3 id="modalDetailTitle" class="text-xl font-black text-slate-900 leading-tight">Vine Fresh Tomatoes</h3>
+                        <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-store text-blue-600"></i>
+                            <span>Sold by: <strong id="modalDetailSeller" class="text-slate-800">ABC Agro Traders</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="p-3.5 bg-orange-50/80 rounded-2xl border border-orange-200 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-orange-900/70 font-semibold block">Marketplace Price</span>
+                            <div class="text-2xl font-black text-orange-600"><span id="modalDetailPrice">₹45.00</span> <span id="modalDetailUnit" class="text-xs text-slate-600 font-normal">/KG</span></div>
+                        </div>
+                        <div id="modalDetailRating" class="px-2.5 py-1 bg-amber-100 text-amber-800 text-xs font-bold rounded-lg flex items-center gap-1">
+                            <i class="fa-solid fa-star text-amber-500"></i> 4.9
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Product Description</h4>
+                        <p id="modalDetailDesc" class="text-xs text-slate-600 leading-relaxed max-h-32 overflow-y-auto">Verified agricultural produce inspected by AI scanner.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100">
+                        <button id="modalDetailAddToCartBtn" class="w-full py-3 rounded-xl bg-orange-100 hover:bg-orange-200 text-orange-800 font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-cart-plus"></i> <span>Add to Cart</span>
+                        </button>
+                        <button id="modalDetailBuyNowBtn" class="w-full py-3 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-bold text-xs shadow-md shadow-orange-600/20 transition flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-bolt"></i> <span>Buy Now</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
-        <p>© 2026 Smart AI Agriculture System — Agri E-Mart Marketplace</p>
+        <p>© 2026 Smart AI Agriculture System — Agri E-Mart Marketplace • AI Quality Scanner • Official Mandi Rates</p>
     </footer>
 
     <script src="/buyer_website/static/js/buyer.js"></script>
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/buyer_website/static/js/voice_multilingual.js"></script>
 </body>
 </html>
-

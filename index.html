@@ -49,20 +49,21 @@
             <!-- Portal Links -->
             <div class="hidden md:flex items-center space-x-2 bg-slate-100 p-1.5 rounded-full border border-slate-200 text-sm font-medium">
                 <a href="/farmer" class="px-4 py-1.5 rounded-full text-emerald-700 hover:bg-white hover:shadow-sm transition flex items-center gap-2">
-                    <i class="fa-solid fa-seedling text-emerald-600"></i> Farmer Portal
+                    <i class="fa-solid fa-seedling text-emerald-600"></i> <span data-i18n="farmer_portal">Farmer Portal</span>
                 </a>
                 <a href="/seller" class="px-4 py-1.5 rounded-full text-blue-700 hover:bg-white hover:shadow-sm transition flex items-center gap-2">
-                    <i class="fa-solid fa-store text-blue-600"></i> Seller Agribusiness
+                    <i class="fa-solid fa-store text-blue-600"></i> <span data-i18n="seller_portal">Seller Agribusiness</span>
                 </a>
                 <a href="/buyer" class="px-4 py-1.5 rounded-full text-amber-700 hover:bg-white hover:shadow-sm transition flex items-center gap-2">
-                    <i class="fa-solid fa-cart-shopping text-amber-600"></i> Buyer E-Mart
+                    <i class="fa-solid fa-cart-shopping text-amber-600"></i> <span data-i18n="buyer_emart">Buyer E-Mart</span>
                 </a>
             </div>
 
             <div class="flex items-center space-x-3">
-                <div class="flex items-center space-x-2 text-xs font-semibold px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
+                <div class="lang-selector-container"></div>
+                <div class="hidden sm:flex items-center space-x-2 text-xs font-semibold px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-full border border-emerald-200">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>REST API & AI Live</span>
+                    <span>AI Live</span>
                 </div>
             </div>
         </div>
@@ -231,6 +232,8 @@
         <p>© 2026 Smart AI Agriculture Ecosystem. Built with Flask, MySQL, Deep Learning & Modern Web Technologies.</p>
     </footer>
 
+    <!-- Voice Recognition & Multilingual Module -->
+    <script src="/farmer_website/static/js/voice_multilingual.js"></script>
 </body>
 </html>
 
